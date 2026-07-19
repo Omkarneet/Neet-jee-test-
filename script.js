@@ -13,6 +13,13 @@ count,
 "medium"
 );
 
+let questions =
+generateQuestions(
+"biology",
+20,
+"hard"
+);
+
 subject:"physics",
 question:"SI unit of Force is?",
 options:[
