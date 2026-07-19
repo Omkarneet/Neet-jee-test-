@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NEET JEE CBT Mock Test</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="logo">
+<h2>NEET JEE CBT MOCK TEST</h2>
+</div>
+
+
+<div class="candidate">
+
+<p>
+<b>Candidate:</b>
+<span id="candidateName">
+Demo Student
+</span>
+</p>
+
+
+<p>
+<b>Test:</b>
+<span id="testName">
+Not Started
+</span>
+</p>
+
+
+</div>
+
+
+<div class="timerBox">
+
+<p>Time Left</p>
+
+<h2 id="timer">
+03:00:00
+</h2>
+
+</div>
+
+
+</header>
+
+
+
+
+
+<section class="setup">
+
+
+<h2>Create Test</h2>
+
+
+<select id="examType">
+
+<option value="neet">
+NEET
+</option>
+
+
+<option value="jee">
+JEE
+</option>
+
+
+<option value="custom">
+Custom Test
+</option>
+
+
+</select>
+
+
+
+<select id="subject">
+
+
+<option value="combined">
+All Subjects
+</option>
+
+
+<option value="physics">
+Physics Only
+</option>
+
+
+<option value="chemistry">
+Chemistry Only
+</option>
+
+
+<option value="biology">
+Biology Only
+</option>
+
+
+<option value="pcm">
+Physics + Chemistry + Maths
+</option>
+
+
+</select>
+
+
+
+<input 
+type="number"
+id="questionCount"
+placeholder="Number of Questions"
+value="180"
+>
+
+
+<input 
+type="number"
+id="timeInput"
+placeholder="Time Minutes"
+value="180"
+>
+
+
+
+<button onclick="startTest()">
+
+Start Test
+
+</button>
+
+
+</section>
+
+
+
+
+
+
+<main class="container">
+
+
+
+<section class="questionPanel">
+
+
+
+<div class="questionTop">
+
+
+<h3 id="questionNumber">
+Question 1
+</h3>
+
+
+<p>
+
+Answered:
+
+<span id="answered">
+0
+</span>
+
+/
+
+
+<span id="total">
+0
+</span>
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="questionBox">
+
+
+<h2 id="questionText">
+
+Question will appear here
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+
+<div id="options">
+
+
+<button class="option">
+Option A
+</button>
+
+
+<button class="option">
+Option B
+</button>
+
+
+<button class="option">
+Option C
+</button>
+
+
+<button class="option">
+Option D
+</button>
+
+
+</div>
+
+
+
+
+
+
+<div class="navigation">
+
+
+<button onclick="previousQuestion()">
+
+Previous
+
+</button>
+
+
+<button onclick="clearAnswer()">
+
+Clear
+
+</button>
+
+
+
+<button onclick="reviewQuestion()">
+
+Mark Review
+
+</button>
+
+
+
+<button onclick="saveNext()">
+
+Save & Next
+
+</button>
+
+
+
+<button onclick="nextQuestion()">
+
+Next
+
+</button>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="sidePanel">
+
+
+<h3>
+Question Palette
+</h3>
+
+
+
+<div id="palette">
+
+
+</div>
+
+
+
+
+<div class="legend">
+
+
+<p>
+<span class="box white"></span>
+Not Visited
+</p>
+
+
+<p>
+<span class="box red"></span>
+Not Answered
+</p>
+
+
+<p>
+<span class="box green"></span>
+Answered
+</p>
+
+
+<p>
+<span class="box purple"></span>
+Review
+</p>
+
+
+<p>
+<span class="box mix"></span>
+Answered + Review
+</p>
+
+
+
+</div>
+
+
+
+
+<button 
+class="submit"
+onclick="submitTest()">
+
+Submit Test
+
+</button>
+
+
+
+</section>
+
+
+
+</main>
+
+
+
+
+
+
+
+<section id="result" class="hidden">
+
+
+<h1>
+Test Completed
+</h1>
+
+
+<h2>
+Score:
+<span id="score">
+0
+</span>
+</h2>
+
+
+
+<div id="analysis">
+
+</div>
+
+
+
+<button onclick="location.reload()">
+
+Restart
+
+</button>
+
+
+</section>
+
+
+
+
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
