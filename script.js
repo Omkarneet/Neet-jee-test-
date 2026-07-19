@@ -609,4 +609,3 @@ document.getElementById("analysis")
 
 
 }
-<script src="script.js"></script>
