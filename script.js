@@ -1,7 +1,4 @@
-// ================================
-// NEET CBT QUESTION GENERATOR
-// ================================
-
+let allQuestions = [];
 
 let questions = [];
 
@@ -16,70 +13,22 @@ let timer;
 let timeLeft = 0;
 
 
+// Load question database
 
-// Question Bank
+fetch("data/questions.json")
+.then(res => res.json())
+.then(data => {
 
-const bank = {
+    allQuestions = data;
 
-physics:[
-{
-q:"SI unit of Force is?",
-o:["Newton","Joule","Watt","Pascal"],
-a:"A"
-},
-{
-q:"Velocity is a?",
-o:["Scalar","Vector","Unit","Constant"],
-a:"B"
-},
-{
-q:"Speed of light is?",
-o:["3×10⁸ m/s","3×10⁵ m/s","300 m/s","30 m/s"],
-a:"A"
-}
-],
+    console.log("Question bank loaded");
 
+})
+.catch(error=>{
 
+console.log("Question loading failed",error);
 
-chemistry:[
-{
-q:"Atomic number of Oxygen?",
-o:["6","7","8","9"],
-a:"C"
-},
-{
-q:"Formula of Water?",
-o:["CO2","H2O","O2","NaCl"],
-a:"B"
-},
-{
-q:"pH of pure water?",
-o:["5","6","7","8"],
-a:"C"
-}
-],
-
-
-
-biology:[
-{
-q:"Powerhouse of cell?",
-o:["Nucleus","Mitochondria","Ribosome","Golgi"],
-a:"B"
-},
-{
-q:"Basic unit of life?",
-o:["Organ","Cell","Tissue","Atom"],
-a:"B"
-},
-{
-q:"Functional unit of kidney?",
-o:["Neuron","Nephron","Alveoli","Heart"],
-a:"B"
-}
-]
-
-};
+});
 
 
 
@@ -91,13 +40,6 @@ function startTest(){
 
 let subject =
 document.getElementById("subject").value;
-
-
-let count =
-Number(
-document.getElementById("questionCount").value
-);
-
 
 
 let minutes =
@@ -114,10 +56,28 @@ questions=[];
 if(subject==="combined"){
 
 
+let physics =
+allQuestions.filter(q=>q.subject==="physics")
+.slice(0,45);
+
+
+
+let chemistry =
+allQuestions.filter(q=>q.subject==="chemistry")
+.slice(0,45);
+
+
+
+let biology =
+allQuestions.filter(q=>q.subject==="biology")
+.slice(0,90);
+
+
+
 questions=[
-...bank.physics,
-...bank.chemistry,
-...bank.biology
+...physics,
+...chemistry,
+...biology
 ];
 
 
@@ -126,25 +86,31 @@ questions=[
 else{
 
 
-questions=[
-...bank[subject]
-];
+let number=90;
+
+
+if(subject==="physics" ||
+subject==="chemistry")
+
+number=45;
+
+
+questions =
+allQuestions
+.filter(q=>q.subject===subject)
+.slice(0,number);
 
 
 }
 
 
 
-// Randomize
+
+// Mix questions
 
 questions.sort(
 ()=>Math.random()-0.5
 );
-
-
-
-questions =
-questions.slice(0,count);
 
 
 
@@ -153,13 +119,15 @@ new Array(questions.length)
 .fill(null);
 
 
+
 status =
 new Array(questions.length)
 .fill("notVisited");
 
 
 
-document.getElementById("total").innerHTML =
+document.getElementById("total")
+.innerHTML=
 questions.length;
 
 
@@ -168,17 +136,15 @@ timeLeft =
 minutes*60;
 
 
+
 startTimer();
 
-
 createPalette();
-
 
 loadQuestion();
 
 
 }
-
 
 
 
@@ -203,7 +169,8 @@ let s=timeLeft%60;
 
 
 
-document.getElementById("timer").innerHTML =
+document.getElementById("timer")
+.innerHTML=
 `${h.toString().padStart(2,"0")}:
 ${m.toString().padStart(2,"0")}:
 ${s.toString().padStart(2,"0")}`;
@@ -219,9 +186,7 @@ submitTest();
 }
 
 
-
 timeLeft--;
-
 
 
 },1000);
@@ -233,10 +198,7 @@ timeLeft--;
 
 
 
-
-
-// LOAD QUESTION
-
+// Load question
 
 function loadQuestion(){
 
@@ -244,29 +206,27 @@ function loadQuestion(){
 let q=questions[current];
 
 
-
 document.getElementById("questionNumber")
-.innerHTML =
+.innerHTML=
 "Question "+(current+1);
 
 
 
 document.getElementById("questionText")
-.innerHTML =
-q.q;
+.innerHTML=
+q.question;
 
 
 
-let optionBox =
+let box =
 document.getElementById("options");
 
 
-
-optionBox.innerHTML="";
-
+box.innerHTML="";
 
 
-q.o.forEach((x,i)=>{
+
+q.options.forEach((op,i)=>{
 
 
 let btn=document.createElement("button");
@@ -275,23 +235,22 @@ let btn=document.createElement("button");
 btn.className="option";
 
 
-let letter =
+let letter=
 String.fromCharCode(65+i);
 
 
 
-btn.innerHTML =
-letter+". "+x;
+btn.innerHTML=
+letter+". "+op;
 
 
 
-btn.onclick=function(){
+btn.onclick=()=>{
 
 
 answers[current]=letter;
 
 status[current]="answered";
-
 
 loadQuestion();
 
@@ -300,15 +259,7 @@ loadQuestion();
 
 
 
-if(answers[current]==letter){
-
-btn.classList.add("selected");
-
-}
-
-
-
-optionBox.appendChild(btn);
+box.appendChild(btn);
 
 
 });
@@ -326,23 +277,20 @@ updateAnswered();
 
 
 
-
-
-// PALETTE
-
+// Palette
 
 function createPalette(){
 
 
-let p =
+let box=
 document.getElementById("palette");
 
 
-p.innerHTML="";
+box.innerHTML="";
 
 
 
-questions.forEach((x,i)=>{
+questions.forEach((q,i)=>{
 
 
 let btn=document.createElement("button");
@@ -354,20 +302,17 @@ btn.className="paletteBtn";
 btn.innerHTML=i+1;
 
 
-
-btn.onclick=function(){
-
+btn.onclick=()=>{
 
 current=i;
 
 loadQuestion();
 
-
 };
 
 
 
-p.appendChild(btn);
+box.appendChild(btn);
 
 
 
@@ -375,8 +320,6 @@ p.appendChild(btn);
 
 
 }
-
-
 
 
 
@@ -384,28 +327,23 @@ p.appendChild(btn);
 function updatePalette(){
 
 
-let buttons =
-document.querySelectorAll(".paletteBtn");
+document.querySelectorAll(".paletteBtn")
+.forEach((btn,i)=>{
 
 
-
-buttons.forEach((b,i)=>{
-
-
-b.className="paletteBtn";
-
+btn.className="paletteBtn";
 
 
 if(status[i]=="answered")
-b.classList.add("answered");
+btn.classList.add("answered");
 
 else
-b.classList.add("notAnswered");
+btn.classList.add("notAnswered");
 
 
 
-if(i==current)
-b.classList.add("current");
+if(i===current)
+btn.classList.add("current");
 
 
 });
@@ -415,11 +353,6 @@ b.classList.add("current");
 
 
 
-
-
-
-
-// NAVIGATION
 
 
 function nextQuestion(){
@@ -433,7 +366,6 @@ loadQuestion();
 }
 
 }
-
 
 
 function previousQuestion(){
@@ -451,8 +383,6 @@ loadQuestion();
 
 
 function saveNext(){
-
-status[current]="answered";
 
 nextQuestion();
 
@@ -482,14 +412,11 @@ nextQuestion();
 
 
 
-
-
 function updateAnswered(){
 
-let c=answers.filter(x=>x).length;
-
 document.getElementById("answered")
-.innerHTML=c;
+.innerHTML =
+answers.filter(x=>x).length;
 
 }
 
@@ -498,8 +425,8 @@ document.getElementById("answered")
 
 
 
-// RESULT
 
+// Submit
 
 function submitTest(){
 
@@ -509,30 +436,18 @@ clearInterval(timer);
 
 let score=0;
 
-let correct=0;
-
-let wrong=0;
-
-
 
 questions.forEach((q,i)=>{
 
 
-if(answers[i]==q.a){
+if(answers[i]==q.answer)
 
 score+=4;
 
-correct++;
 
-}
-
-else if(answers[i]){
+else if(answers[i])
 
 score-=1;
-
-wrong++;
-
-}
 
 
 });
@@ -551,16 +466,6 @@ document.getElementById("result")
 
 document.getElementById("score")
 .innerHTML=score;
-
-
-
-document.getElementById("analysis")
-.innerHTML=
-`
-Correct : ${correct}<br>
-Wrong : ${wrong}<br>
-Unattempted : ${questions.length-correct-wrong}
-`;
 
 
 }
