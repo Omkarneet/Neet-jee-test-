@@ -1,0 +1,73 @@
+[
+  {
+    "subject": "physics",
+    "question": "SI unit of Force is?",
+    "options": [
+      "Newton",
+      "Joule",
+      "Watt",
+      "Pascal"
+    ],
+    "answer": "A"
+  },
+
+  {
+    "subject": "physics",
+    "question": "The speed of light is approximately?",
+    "options": [
+      "3 × 10⁸ m/s",
+      "3 × 10⁶ m/s",
+      "3 × 10⁴ m/s",
+      "300 m/s"
+    ],
+    "answer": "A"
+  },
+
+  {
+    "subject": "chemistry",
+    "question": "Atomic number of Oxygen is?",
+    "options": [
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "answer": "C"
+  },
+
+  {
+    "subject": "chemistry",
+    "question": "Chemical formula of water is?",
+    "options": [
+      "CO₂",
+      "H₂O",
+      "O₂",
+      "NaCl"
+    ],
+    "answer": "B"
+  },
+
+  {
+    "subject": "biology",
+    "question": "Powerhouse of cell is?",
+    "options": [
+      "Nucleus",
+      "Mitochondria",
+      "Ribosome",
+      "Golgi Body"
+    ],
+    "answer": "B"
+  },
+
+  {
+    "subject": "biology",
+    "question": "Functional unit of kidney is?",
+    "options": [
+      "Neuron",
+      "Nephron",
+      "Alveoli",
+      "Heart"
+    ],
+    "answer": "B"
+  }
+]
