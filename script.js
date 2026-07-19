@@ -1,136 +1,106 @@
-// ===============================
-// NEET/JEE CBT ENGINE
-// ===============================
+// ================================
+// NEET CBT QUESTION GENERATOR
+// ================================
 
 
-// Question Bank
-// Later this will come from Java Database
+let questions = [];
 
-questions =
-generateQuestions(
-subject,
-count,
-"medium"
-);
+let current = 0;
 
-let questions =
-generateQuestions(
-"biology",
-20,
-"hard"
-);
+let answers = [];
 
-subject:"physics",
-question:"SI unit of Force is?",
-options:[
-"Newton",
-"Joule",
-"Watt",
-"Pascal"
-],
-answer:"A"
-},
-
-{
-subject:"physics",
-question:"Velocity is a?",
-options:[
-"Scalar quantity",
-"Vector quantity",
-"Unit",
-"Constant"
-],
-answer:"B"
-},
-
-{
-subject:"chemistry",
-question:"Atomic number of Oxygen is?",
-options:[
-"6",
-"7",
-"8",
-"9"
-],
-answer:"C"
-},
-
-{
-subject:"chemistry",
-question:"Chemical formula of water?",
-options:[
-"CO2",
-"H2O",
-"O2",
-"NaCl"
-],
-answer:"B"
-},
-
-{
-subject:"biology",
-question:"Powerhouse of cell is?",
-options:[
-"Nucleus",
-"Mitochondria",
-"Ribosome",
-"Golgi body"
-],
-answer:"B"
-},
-
-{
-subject:"biology",
-question:"Human blood group system is called?",
-options:[
-"DNA",
-"ABO",
-"RNA",
-"ATP"
-],
-answer:"B"
-}
-
-];
-
-
-
-
-// Variables
-
-let questions=[];
-
-let current=0;
-
-let answers=[];
-
-let status=[];
-
-let time=0;
+let status = [];
 
 let timer;
 
+let timeLeft = 0;
 
 
-// ===============================
+
+// Question Bank
+
+const bank = {
+
+physics:[
+{
+q:"SI unit of Force is?",
+o:["Newton","Joule","Watt","Pascal"],
+a:"A"
+},
+{
+q:"Velocity is a?",
+o:["Scalar","Vector","Unit","Constant"],
+a:"B"
+},
+{
+q:"Speed of light is?",
+o:["3×10⁸ m/s","3×10⁵ m/s","300 m/s","30 m/s"],
+a:"A"
+}
+],
+
+
+
+chemistry:[
+{
+q:"Atomic number of Oxygen?",
+o:["6","7","8","9"],
+a:"C"
+},
+{
+q:"Formula of Water?",
+o:["CO2","H2O","O2","NaCl"],
+a:"B"
+},
+{
+q:"pH of pure water?",
+o:["5","6","7","8"],
+a:"C"
+}
+],
+
+
+
+biology:[
+{
+q:"Powerhouse of cell?",
+o:["Nucleus","Mitochondria","Ribosome","Golgi"],
+a:"B"
+},
+{
+q:"Basic unit of life?",
+o:["Organ","Cell","Tissue","Atom"],
+a:"B"
+},
+{
+q:"Functional unit of kidney?",
+o:["Neuron","Nephron","Alveoli","Heart"],
+a:"B"
+}
+]
+
+};
+
+
+
+
 // START TEST
-// ===============================
-
 
 function startTest(){
 
 
-let subject=
+let subject =
 document.getElementById("subject").value;
 
 
-let total=
+let count =
 Number(
 document.getElementById("questionCount").value
 );
 
 
-let minutes=
+
+let minutes =
 Number(
 document.getElementById("timeInput").value
 );
@@ -141,24 +111,31 @@ questions=[];
 
 
 
-// Select questions
-
-questionBank.forEach(q=>{
+if(subject==="combined"){
 
 
-if(subject==="combined"
-||
-q.subject===subject){
+questions=[
+...bank.physics,
+...bank.chemistry,
+...bank.biology
+];
 
-questions.push(q);
 
 }
 
-});
+else{
+
+
+questions=[
+...bank[subject]
+];
+
+
+}
 
 
 
-// Random order
+// Randomize
 
 questions.sort(
 ()=>Math.random()-0.5
@@ -166,42 +143,32 @@ questions.sort(
 
 
 
-// Limit questions
-
-questions=
-questions.slice(0,total);
+questions =
+questions.slice(0,count);
 
 
 
-answers=
+answers =
 new Array(questions.length)
 .fill(null);
 
 
-
-status=
+status =
 new Array(questions.length)
 .fill("notVisited");
 
 
 
-document.getElementById("total")
-.innerHTML=questions.length;
+document.getElementById("total").innerHTML =
+questions.length;
 
 
 
-document.getElementById("testName")
-.innerHTML=
-subject.toUpperCase();
-
-
-
-
-time=minutes*60;
+timeLeft =
+minutes*60;
 
 
 startTimer();
-
 
 
 createPalette();
@@ -210,7 +177,6 @@ createPalette();
 loadQuestion();
 
 
-
 }
 
 
@@ -218,11 +184,7 @@ loadQuestion();
 
 
 
-
-// ===============================
 // TIMER
-// ===============================
-
 
 function startTimer(){
 
@@ -233,26 +195,22 @@ clearInterval(timer);
 timer=setInterval(()=>{
 
 
-let h=Math.floor(time/3600);
+let h=Math.floor(timeLeft/3600);
 
-let m=Math.floor(
-(time%3600)/60
-);
+let m=Math.floor((timeLeft%3600)/60);
 
-let s=time%60;
+let s=timeLeft%60;
 
 
 
-document.getElementById("timer")
-.innerHTML=
-
-`${h.toString().padStart(2,'0')}:
-${m.toString().padStart(2,'0')}:
-${s.toString().padStart(2,'0')}`;
+document.getElementById("timer").innerHTML =
+`${h.toString().padStart(2,"0")}:
+${m.toString().padStart(2,"0")}:
+${s.toString().padStart(2,"0")}`;
 
 
 
-if(time<=0){
+if(timeLeft<=0){
 
 clearInterval(timer);
 
@@ -261,12 +219,12 @@ submitTest();
 }
 
 
-time--;
+
+timeLeft--;
 
 
 
 },1000);
-
 
 
 }
@@ -276,9 +234,8 @@ time--;
 
 
 
-// ===============================
+
 // LOAD QUESTION
-// ===============================
 
 
 function loadQuestion(){
@@ -287,54 +244,63 @@ function loadQuestion(){
 let q=questions[current];
 
 
+
 document.getElementById("questionNumber")
-.innerHTML=
+.innerHTML =
 "Question "+(current+1);
 
 
 
 document.getElementById("questionText")
-.innerHTML=q.question;
+.innerHTML =
+q.q;
 
 
 
-let box=
+let optionBox =
 document.getElementById("options");
 
 
-box.innerHTML="";
+
+optionBox.innerHTML="";
 
 
 
-q.options.forEach((op,i)=>{
+q.o.forEach((x,i)=>{
 
 
-let btn=
-document.createElement("button");
+let btn=document.createElement("button");
 
 
 btn.className="option";
 
 
-let letter=
+let letter =
 String.fromCharCode(65+i);
 
 
 
-btn.innerHTML=
-letter+". "+op;
+btn.innerHTML =
+letter+". "+x;
 
 
 
 btn.onclick=function(){
 
-selectAnswer(letter,btn);
+
+answers[current]=letter;
+
+status[current]="answered";
+
+
+loadQuestion();
+
 
 };
 
 
 
-if(answers[current]===letter){
+if(answers[current]==letter){
 
 btn.classList.add("selected");
 
@@ -342,19 +308,14 @@ btn.classList.add("selected");
 
 
 
-box.appendChild(btn);
-
+optionBox.appendChild(btn);
 
 
 });
 
 
 
-status[current]="notAnswered";
-
-
 updatePalette();
-
 
 updateAnswered();
 
@@ -367,54 +328,13 @@ updateAnswered();
 
 
 
-// ===============================
-// SELECT ANSWER
-// ===============================
-
-
-function selectAnswer(letter,button){
-
-
-answers[current]=letter;
-
-
-status[current]="answered";
-
-
-document.querySelectorAll(".option")
-.forEach(b=>
-b.classList.remove("selected")
-);
-
-
-
-button.classList.add("selected");
-
-
-
-updatePalette();
-
-updateAnswered();
-
-
-
-}
-
-
-
-
-
-
-
-// ===============================
 // PALETTE
-// ===============================
 
 
 function createPalette(){
 
 
-let p=
+let p =
 document.getElementById("palette");
 
 
@@ -422,32 +342,33 @@ p.innerHTML="";
 
 
 
-questions.forEach((q,i)=>{
+questions.forEach((x,i)=>{
 
 
-let btn=
-document.createElement("button");
+let btn=document.createElement("button");
+
+
+btn.className="paletteBtn";
 
 
 btn.innerHTML=i+1;
 
 
-btn.className=
-"paletteBtn";
-
-
 
 btn.onclick=function(){
+
 
 current=i;
 
 loadQuestion();
+
 
 };
 
 
 
 p.appendChild(btn);
+
 
 
 });
@@ -463,7 +384,7 @@ p.appendChild(btn);
 function updatePalette(){
 
 
-let buttons=
+let buttons =
 document.querySelectorAll(".paletteBtn");
 
 
@@ -478,19 +399,13 @@ b.className="paletteBtn";
 if(status[i]=="answered")
 b.classList.add("answered");
 
-
-else if(status[i]=="review")
-b.classList.add("review");
-
-
 else
 b.classList.add("notAnswered");
 
 
 
-if(i===current)
+if(i==current)
 b.classList.add("current");
-
 
 
 });
@@ -504,13 +419,10 @@ b.classList.add("current");
 
 
 
-// ===============================
-// BUTTON FUNCTIONS
-// ===============================
+// NAVIGATION
 
 
 function nextQuestion(){
-
 
 if(current<questions.length-1){
 
@@ -525,7 +437,6 @@ loadQuestion();
 
 
 function previousQuestion(){
-
 
 if(current>0){
 
@@ -551,13 +462,11 @@ nextQuestion();
 
 function clearAnswer(){
 
-
 answers[current]=null;
 
 status[current]="notAnswered";
 
 loadQuestion();
-
 
 }
 
@@ -565,20 +474,11 @@ loadQuestion();
 
 function reviewQuestion(){
 
-
-if(answers[current])
-status[current]="reviewAnswered";
-
-else
 status[current]="review";
-
 
 nextQuestion();
 
-
 }
-
-
 
 
 
@@ -586,21 +486,10 @@ nextQuestion();
 
 function updateAnswered(){
 
-
-let count=0;
-
-
-answers.forEach(a=>{
-
-if(a!=null)
-count++;
-
-});
-
+let c=answers.filter(x=>x).length;
 
 document.getElementById("answered")
-.innerHTML=count;
-
+.innerHTML=c;
 
 }
 
@@ -609,9 +498,7 @@ document.getElementById("answered")
 
 
 
-// ===============================
-// SUBMIT
-// ===============================
+// RESULT
 
 
 function submitTest(){
@@ -631,7 +518,7 @@ let wrong=0;
 questions.forEach((q,i)=>{
 
 
-if(answers[i]==q.answer){
+if(answers[i]==q.a){
 
 score+=4;
 
@@ -639,7 +526,7 @@ correct++;
 
 }
 
-else if(answers[i]!=null){
+else if(answers[i]){
 
 score-=1;
 
@@ -656,10 +543,6 @@ document.querySelector(".container")
 .style.display="none";
 
 
-document.querySelector(".setup")
-.style.display="none";
-
-
 
 document.getElementById("result")
 .classList.remove("hidden");
@@ -673,12 +556,11 @@ document.getElementById("score")
 
 document.getElementById("analysis")
 .innerHTML=
-
 `
-<p>Total Questions: ${questions.length}</p>
-<p>Correct: ${correct}</p>
-<p>Wrong: ${wrong}</p>
-<p>Unattempted: ${questions.length-correct-wrong}</p>
+Correct : ${correct}<br>
+Wrong : ${wrong}<br>
+Unattempted : ${questions.length-correct-wrong}
 `;
+
 
 }
