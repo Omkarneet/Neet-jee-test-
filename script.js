@@ -1,3 +1,19 @@
+let questionBank = [
+
+{
+subject:"physics",
+question:"Your question here",
+options:[
+"Option A",
+"Option B",
+"Option C",
+"Option D"
+],
+answer:"A"
+}
+
+];
+
 let allQuestions = [];
 
 let questions = [];
