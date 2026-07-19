@@ -6,9 +6,13 @@
 // Question Bank
 // Later this will come from Java Database
 
-const questionBank = [
+questions =
+generateQuestions(
+subject,
+count,
+"medium"
+);
 
-{
 subject:"physics",
 question:"SI unit of Force is?",
 options:[
